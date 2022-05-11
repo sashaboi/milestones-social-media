@@ -1,0 +1,37 @@
+.navbar-parent {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 0.6rem;
+  box-shadow: 0 5px 5px -5px var(--secondary-color);
+}
+.logo-container {
+  color: var(--heading-color);
+  font-weight: 600;
+  font-size: 2rem;
+  padding: 1rem;
+  border-radius: 0.2rem;
+}
+.logo-container:hover {
+  cursor: pointer;
+  color: var(--bg-color);
+  background-color: var(--secondary-color);
+}
+.nav-options-container {
+  display: flex;
+  align-items: center;
+  color: var(--font-color);
+  justify-content: space-around;
+  gap: 2rem;
+  font-size: 1.2rem;
+}
+.nav-option {
+  font-weight: 500;
+  padding: 1rem;
+  border-radius: 0.2rem;
+}
+.nav-option:hover {
+  cursor: pointer;
+  color: var(--bg-color);
+  background-color: var(--secondary-color);
+}

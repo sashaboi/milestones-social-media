@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --primary-color: #302ae6;
+  --secondary-color: #536390;
+  --font-color: #424242;
+  --bg-color: #fff;
+  --heading-color: #292922;
+}
+[data-theme='dark'] {
+  --primary-color: #9a97f3;
+  --secondary-color: #818cab;
+  --font-color: #e1e1ff;
+  --bg-color: #161625;
+  --heading-color: #818cab;
+}
+a {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+  color: inherit;
+}
