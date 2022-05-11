@@ -1,0 +1,10 @@
+.sidebar {
+  width: 20vw;
+  height: 90vh;
+  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  border: solid 1px var(--secondary-color);
+  border-top: none;
+}

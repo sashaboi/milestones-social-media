@@ -1,5 +1,5 @@
-import React from "react";
-
+import React from 'react';
+import './myfeed.css';
 export const Myfeed = () => {
-  return <div>Myfeed</div>;
+  return <div className="feed-parent">Myfeed</div>;
 };

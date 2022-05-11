@@ -1,6 +1,6 @@
-import { Response } from "miragejs";
-import { formatDate, requiresAuth } from "../utils/authUtils";
-import { v4 as uuid } from "uuid";
+import { Response } from 'miragejs';
+import { formatDate, requiresAuth } from '../utils/authUtils';
+import { v4 as uuid } from 'uuid';
 
 /**
  * All the routes related to post are present here.
@@ -72,7 +72,7 @@ export const createPostHandler = function (schema, request) {
         {},
         {
           errors: [
-            "The username you entered is not Registered. Not Found error",
+            'The username you entered is not Registered. Not Found error',
           ],
         }
       );
@@ -117,7 +117,7 @@ export const editPostHandler = function (schema, request) {
         {},
         {
           errors: [
-            "The username you entered is not Registered. Not Found error",
+            'The username you entered is not Registered. Not Found error',
           ],
         }
       );
@@ -162,22 +162,22 @@ export const likePostHandler = function (schema, request) {
         {},
         {
           errors: [
-            "The username you entered is not Registered. Not Found error",
+            'The username you entered is not Registered. Not Found error',
           ],
         }
       );
     }
     const postId = request.params.postId;
     const post = schema.posts.findBy({ _id: postId }).attrs;
-    if (post.likes.likedBy.some((currUser) => currUser._id === user._id)) {
+    if (post.likes.likedBy.some(currUser => currUser._id === user._id)) {
       return new Response(
         400,
         {},
-        { errors: ["Cannot like a post that is already liked. "] }
+        { errors: ['Cannot like a post that is already liked. '] }
       );
     }
     post.likes.dislikedBy = post.likes.dislikedBy.filter(
-      (currUser) => currUser._id !== user._id
+      currUser => currUser._id !== user._id
     );
     post.likes.likeCount += 1;
     post.likes.likedBy.push(user);
@@ -208,7 +208,7 @@ export const dislikePostHandler = function (schema, request) {
         {},
         {
           errors: [
-            "The username you entered is not Registered. Not Found error",
+            'The username you entered is not Registered. Not Found error',
           ],
         }
       );
@@ -219,19 +219,19 @@ export const dislikePostHandler = function (schema, request) {
       return new Response(
         400,
         {},
-        { errors: ["Cannot decrement like less than 0."] }
+        { errors: ['Cannot decrement like less than 0.'] }
       );
     }
-    if (post.likes.dislikedBy.some((currUser) => currUser._id === user._id)) {
+    if (post.likes.dislikedBy.some(currUser => currUser._id === user._id)) {
       return new Response(
         400,
         {},
-        { errors: ["Cannot dislike a post that is already disliked. "] }
+        { errors: ['Cannot dislike a post that is already disliked. '] }
       );
     }
     post.likes.likeCount -= 1;
     const updatedLikedBy = post.likes.likedBy.filter(
-      (currUser) => currUser._id !== user._id
+      currUser => currUser._id !== user._id
     );
     post.likes.dislikedBy.push(user);
     post = { ...post, likes: { ...post.likes, likedBy: updatedLikedBy } };
@@ -261,13 +261,13 @@ export const deletePostHandler = function (schema, request) {
         {},
         {
           errors: [
-            "The username you entered is not Registered. Not Found error",
+            'The username you entered is not Registered. Not Found error',
           ],
         }
       );
     }
     const postId = request.params.postId;
-    let post = schema.posts.findBy({ _id: postId }).attrs;
+    const post = schema.posts.findBy({ _id: postId }).attrs;
     if (post.username !== user.username) {
       return new Response(
         400,
