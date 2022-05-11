@@ -1,0 +1,10 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.center-items-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

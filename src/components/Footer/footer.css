@@ -1,0 +1,12 @@
+.footer-parent {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+}
