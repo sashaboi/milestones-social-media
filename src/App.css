@@ -11,6 +11,7 @@
   --font-color: #424242;
   --bg-color: #fff;
   --heading-color: #292922;
+  --hover-color: rgba(83, 99, 144, 0.5);
 }
 [data-theme='dark'] {
   --primary-color: #9a97f3;
