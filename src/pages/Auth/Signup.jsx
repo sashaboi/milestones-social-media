@@ -58,30 +58,27 @@ export const Signup = () => {
           <div className="extra-buttons-auth">
             <button
               onClick={() => {
-                setEmail('kuldeep@gmail.com');
-                setPassword('Kuldeep123!');
+                setEmail('bill.gates@gmail.com');
               }}
               className="secondary-btn"
             >
-              Signup as Kuldeep
+              Signup as Bill Gates
             </button>
             <button
               onClick={() => {
-                setEmail('Bhavya@gmail.com');
-                setPassword('Bhavya!');
+                setEmail('elon.musk@gmail.com');
               }}
               className="secondary-btn"
             >
-              Signup as Bhavya
+              Signup as Elon Musk
             </button>
             <button
               onClick={() => {
-                setEmail('Vikrant@gmail.com');
-                setPassword('Vikrant!');
+                setEmail('sundar@gmail.com');
               }}
               className="secondary-btn"
             >
-              Signup as Vikrant
+              Signup as Sundar Pichai
             </button>
           </div>
         </div>

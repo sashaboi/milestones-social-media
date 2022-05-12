@@ -11,7 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState('adarshBalika123');
 
   const userCred = {
-    email: email,
+    username: email,
     password: password,
   };
   const LoginClickHandler = () => {
@@ -21,7 +21,7 @@ const Login = () => {
         navigate('/');
       },
       error => {
-        console.log(error);
+        console.log(error.response.data.errors[0]);
       }
     );
   };
@@ -53,9 +53,33 @@ const Login = () => {
           </div>
           <hr />
           <div className="extra-buttons-auth">
-            <button className="secondary-btn">Login as Onkar</button>
-            <button className="secondary-btn">Login as Ravi</button>
-            <button className="secondary-btn">Login as Darshan</button>
+            <button
+              onClick={() => {
+                setEmail('bill.gates@gmail.com');
+                setPassword('adarshBalika123');
+              }}
+              className="secondary-btn"
+            >
+              Login as Bill Gates
+            </button>
+            <button
+              onClick={() => {
+                setEmail('elon.musk@gmail.com');
+                setPassword('adarshBalika123');
+              }}
+              className="secondary-btn"
+            >
+              Login as Elon Musk
+            </button>
+            <button
+              onClick={() => {
+                setEmail('sundar@gmail.com');
+                setPassword('adarshBalika123');
+              }}
+              className="secondary-btn"
+            >
+              Login as Sundar Pichai
+            </button>
           </div>
         </div>
       </div>
