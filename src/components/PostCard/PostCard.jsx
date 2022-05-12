@@ -5,13 +5,18 @@ import { FaRegComment, FaRegHeart } from 'react-icons/fa';
 import { UsePost } from '../../context/Post-context';
 import { UseUser } from '../../context/User-context';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const PostCard = ({ post }) => {
+  const navigate = useNavigate();
   const { userObj } = UseUser();
   const { dispatch } = UsePost();
   const LikePostHandler = () => {
     const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
     const token = localStorage.getItem('token');
+    if (token === null) {
+      navigate('/auth/login');
+    }
     const header = { headers: { authorization: token } };
     if (hasliked) {
       console.log('dislike');
