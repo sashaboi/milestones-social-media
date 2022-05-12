@@ -52,7 +52,7 @@ const Login = () => {
             </button>
           </div>
           <hr />
-          <div className="extra-buttons-auth">
+          {/* <div className="extra-buttons-auth">
             <button
               onClick={() => {
                 setEmail('bill.gates@gmail.com');
@@ -80,7 +80,7 @@ const Login = () => {
             >
               Login as Sundar Pichai
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />
