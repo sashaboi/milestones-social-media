@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Lexend+Deca&display=swap');
 * {
   margin: 0;
   padding: 0;
+
+  font-family: 'Lexend Deca', sans-serif;
 }
 :root {
   --primary-color: #302ae6;
@@ -22,4 +25,47 @@ a {
 a:visited {
   text-decoration: none;
   color: inherit;
+}
+.primary-btn {
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  border: none;
+}
+.primary-btn:hover {
+  transition: 0.3s;
+  transform: scale(1.05);
+  cursor: pointer;
+  background-color: var(--primary-color);
+}
+.primary-btn:disabled {
+  cursor: not-allowed;
+}
+.primary-btn:disabled:hover {
+  background-color: var(--heading-color);
+  transition: none;
+  transform: none;
+}
+.secondary-btn {
+  background-color: var(--bg-color);
+  border: 1px solid var(--secondary-color);
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+}
+.secondary-btn:hover {
+  cursor: pointer;
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+}
+.single-page-heading {
+  font-size: 2.5rem;
+}
+.center-items-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
 }

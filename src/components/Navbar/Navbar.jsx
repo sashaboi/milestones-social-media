@@ -6,7 +6,7 @@ export const Navbar = () => {
     <div className="navbar-parent">
       <div className="logo-container">
         {/* <img src="" alt="" /> */}
-        Brag-A-lot
+        MileStones
       </div>
       <div className="nav-options-container">
         <Link to={'/'}>

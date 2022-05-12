@@ -3,8 +3,11 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.center-items-container {
+.home-page-container {
+  margin: auto;
+  text-align: center;
+  width: 80vw;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: space-evenly;
 }
