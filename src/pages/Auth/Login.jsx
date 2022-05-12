@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Footer, Navbar } from '../../components';
 import axios from 'axios';
+import { UseUser } from '../../context/User-context';
 
 import './auth.css';
 const Login = () => {
+  const { setUserObj } = UseUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState('adarshbalika@gmail.com');
   const [password, setPassword] = useState('adarshBalika123');
@@ -17,6 +19,8 @@ const Login = () => {
   const LoginClickHandler = () => {
     axios.post('/api/auth/login', userCred).then(
       response => {
+        console.log(response);
+        setUserObj(response.data.foundUser);
         localStorage.setItem('token', response.data.encodedToken);
         navigate('/');
       },

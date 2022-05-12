@@ -33,6 +33,10 @@
 .post-content {
   flex: auto;
 }
+.post-btn {
+  display: flex;
+  align-items: center;
+}
 .post-btn:hover {
   cursor: pointer;
 }
