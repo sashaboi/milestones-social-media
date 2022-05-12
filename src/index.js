@@ -4,13 +4,16 @@ import './index.css';
 import App from './App';
 import { makeServer } from './server';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { PostProvider } from './context/Post-context';
 // Call make Server
 makeServer();
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <PostProvider>
+        <App />
+      </PostProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')

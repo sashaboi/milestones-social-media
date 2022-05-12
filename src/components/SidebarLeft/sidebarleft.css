@@ -1,5 +1,4 @@
 .sidebar {
-  width: 20vw;
   height: 90vh;
   text-align: center;
   display: flex;
@@ -7,4 +6,5 @@
   justify-content: center;
   border: solid 1px var(--secondary-color);
   border-top: none;
+  flex-basis: 150rem;
 }

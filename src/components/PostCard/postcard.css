@@ -1,0 +1,38 @@
+.post-card-parent {
+  color: var(--font-color);
+  background-color: var(--bg-color);
+  padding: 0.5rem 0.5rem;
+  border-bottom: 1px solid var(--secondary-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.post-card-parent:hover {
+  background-color: var(--hover-color);
+}
+.post-top-content {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.post-content {
+  text-align: left;
+}
+.post-bottom-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 1.5rem;
+}
+.post-options-btn {
+  font-size: 1.5rem;
+}
+.profile-data {
+  width: 20vw;
+}
+.post-content {
+  flex: auto;
+}
+.post-btn:hover {
+  cursor: pointer;
+}
