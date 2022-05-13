@@ -8,7 +8,7 @@ export const Navbar = () => {
     navigate('/');
   };
   const token = localStorage.getItem('token');
-  console.log(token);
+
   return (
     <div className="navbar-parent">
       <div className="logo-container">
