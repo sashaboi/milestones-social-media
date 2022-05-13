@@ -10,6 +10,6 @@ const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
-const UseUser = () => useContext(UserContext);
+const useUser = () => useContext(UserContext);
 
-export { UseUser, UserProvider };
+export { useUser, UserProvider };

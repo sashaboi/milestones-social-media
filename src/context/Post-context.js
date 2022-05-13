@@ -1,6 +1,5 @@
 import { React, createContext, useContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const PostContext = createContext();
 
@@ -17,12 +16,11 @@ const PostProvider = ({ children }) => {
     }
   };
   const [state, dispatch] = useReducer(reducerfunc, []);
-  const navigate = useNavigate();
+
   useEffect(() => {
     axios.get('/api/posts').then(
       response => {
         dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
-        navigate('/');
       },
       error => {
         console.log(error);

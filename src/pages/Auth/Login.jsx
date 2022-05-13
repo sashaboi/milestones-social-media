@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Footer, Navbar } from '../../components';
 import axios from 'axios';
-import { UseUser } from '../../context/User-context';
+import { useUser } from '../../context/User-context';
 
 import './auth.css';
 const Login = () => {
-  const { setUserObj } = UseUser();
+  const { setUserObj } = useUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState('adarshbalika@gmail.com');
   const [password, setPassword] = useState('adarshBalika123');

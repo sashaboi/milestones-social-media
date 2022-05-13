@@ -1,18 +1,19 @@
 import React from 'react';
 import './postcard.css';
 
-import { FaRegComment, FaRegHeart } from 'react-icons/fa';
+import { FaRegComment } from 'react-icons/fa';
+import { AiOutlineLike, AiFillLike } from 'react-icons/ai';
 import { UsePost } from '../../context/Post-context';
-import { UseUser } from '../../context/User-context';
+import { useUser } from '../../context/User-context';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export const PostCard = ({ post }) => {
   const navigate = useNavigate();
-  const { userObj } = UseUser();
+  const { userObj } = useUser();
   const { dispatch } = UsePost();
+  const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
   const LikePostHandler = () => {
-    const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
     const token = localStorage.getItem('token');
     if (token === null) {
       navigate('/auth/login');
@@ -56,7 +57,8 @@ export const PostCard = ({ post }) => {
           onClick={() => LikePostHandler()}
           className="post-like-button post-btn"
         >
-          <FaRegHeart />
+          {hasliked ? <AiFillLike /> : <AiOutlineLike />}
+
           {post.likes.likeCount}
         </div>
         <div className="post-comment-button post-btn">

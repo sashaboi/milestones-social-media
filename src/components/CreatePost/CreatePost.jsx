@@ -1,7 +1,17 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UsePost } from '../../context/Post-context';
 
 import './createpost.css';
 export const CreatePost = () => {
+  const { dispatch } = UsePost();
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  if (token === null) {
+    navigate('/auth/login');
+  }
+  const header = { headers: { authorization: token } };
   const [postText, setPostText] = useState('');
   const [letterCounter, setLetterCounter] = useState('');
   useEffect(() => {
@@ -9,7 +19,17 @@ export const CreatePost = () => {
       ? setLetterCounter('letter-counter-danger')
       : setLetterCounter('letter-counter-safe');
   }, [postText]);
-
+  const CreatePostHandler = () => {
+    axios.post('/api/posts', { postData: postText }, header).then(
+      response => {
+        console.log('create post response', response.data.posts);
+        dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
+      },
+      error => {
+        console.log(error.response.data.message);
+      }
+    );
+  };
   return (
     <div className="create-post-parent">
       <div className={`letter-counter ${letterCounter}`}>
@@ -23,7 +43,11 @@ export const CreatePost = () => {
         rows="3"
       ></textarea>
       <div className="post-button">
-        <button disabled={postText.length > 140} className="primary-btn">
+        <button
+          onClick={() => CreatePostHandler()}
+          disabled={postText.length > 140}
+          className="primary-btn"
+        >
           Post
         </button>
       </div>
