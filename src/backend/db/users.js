@@ -15,6 +15,24 @@ export const users = [
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
+  {
+    _id: uuid(),
+    firstName: 'Onkar ',
+    lastName: 'Deshpande',
+    username: 'Sashaboi',
+    password: 'Sashaboi',
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
+  {
+    _id: uuid(),
+    firstName: 'Tushar ',
+    lastName: 'Deshpande',
+    username: 'Tushar',
+    password: 'Sashaboi',
+    createdAt: formatDate(),
+    updatedAt: formatDate(),
+  },
 ];
 /*
 loginJson = {

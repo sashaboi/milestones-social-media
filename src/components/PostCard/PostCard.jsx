@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './postcard.css';
 
 import { FaRegComment } from 'react-icons/fa';
@@ -15,11 +15,6 @@ export const PostCard = ({ post }) => {
   const { setShowModal } = useModal();
   const navigate = useNavigate();
   const { userObj, setUserObj } = useUser();
-  useEffect(() => {
-    if (userObj === undefined) {
-      navigate('/auth/login');
-    }
-  }, [userObj]);
 
   const { dispatch, setLocalComments } = UsePost();
   const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
