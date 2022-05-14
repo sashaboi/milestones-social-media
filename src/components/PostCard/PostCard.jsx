@@ -3,6 +3,7 @@ import './postcard.css';
 
 import { FaRegComment } from 'react-icons/fa';
 import { AiOutlineLike, AiFillLike } from 'react-icons/ai';
+import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 import { UsePost } from '../../context/Post-context';
 import { useUser } from '../../context/User-context';
 import axios from 'axios';
@@ -12,18 +13,18 @@ import { useModal } from '../../context/Modal-context';
 export const PostCard = ({ post }) => {
   const { setShowModal } = useModal();
   const navigate = useNavigate();
-  const { userObj } = useUser();
+  const { userObj, setUserObj } = useUser();
   if (userObj === undefined) {
     navigate('/auth/login');
   }
   const { dispatch, setLocalComments } = UsePost();
   const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
+  const token = localStorage.getItem('token');
+  if (token === null) {
+    navigate('/auth/login');
+  }
+  const header = { headers: { authorization: token } };
   const LikePostHandler = () => {
-    const token = localStorage.getItem('token');
-    if (token === null) {
-      navigate('/auth/login');
-    }
-    const header = { headers: { authorization: token } };
     if (hasliked) {
       console.log('dislike');
       axios.post(`api/posts/dislike/${post._id}`, {}, header).then(
@@ -54,6 +55,34 @@ export const PostCard = ({ post }) => {
 
     setShowModal(true);
   };
+  const addToBookmarkHandler = () => {
+    axios.post(`/api/users/bookmark/${post._id}`, {}, header).then(
+      response => {
+        console.log(response);
+
+        const newUserObj = { ...userObj };
+        newUserObj.bookmarks = response.data.bookmarks;
+        setUserObj(newUserObj);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
+  const removeFromBookmarkHandler = () => {
+    axios.post(`/api/users/remove-bookmark/${post._id}`, {}, header).then(
+      response => {
+        console.log(response);
+
+        const newUserObj = { ...userObj };
+        newUserObj.bookmarks = response.data.bookmarks;
+        setUserObj(newUserObj);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  };
   return (
     <div className="post-card-parent">
       <div className="post-top-content">
@@ -62,6 +91,17 @@ export const PostCard = ({ post }) => {
           <div className="username-holder">{post.username}</div>
         </div>
         <div className="post-content">{post.content}</div>
+        <div className="bookmark-icon">
+          {userObj.bookmarks.some(obj => obj._id === post._id) ? (
+            <div onClick={() => removeFromBookmarkHandler()}>
+              <BsBookmarkFill />
+            </div>
+          ) : (
+            <div onClick={() => addToBookmarkHandler()}>
+              <BsBookmark />
+            </div>
+          )}
+        </div>
       </div>
       <div className="post-bottom-content">
         <div

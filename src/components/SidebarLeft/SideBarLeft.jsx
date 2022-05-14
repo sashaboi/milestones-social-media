@@ -7,6 +7,7 @@ export const SideBarLeft = () => {
     <div className="sidebar">
       <h2>Profile</h2>
       <button onClick={() => navigate('/profile')}>Go to user profile</button>
+      <button onClick={() => navigate('/bookmarks')}>Go to Bookmarks</button>
     </div>
   );
 };
