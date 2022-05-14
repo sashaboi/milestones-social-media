@@ -24,6 +24,7 @@ export const CreatePost = () => {
       response => {
         console.log('create post response', response.data.posts);
         dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
+        setPostText('');
       },
       error => {
         console.log(error.response.data.message);
