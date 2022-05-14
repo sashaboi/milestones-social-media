@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './postcard.css';
 
 import { FaRegComment } from 'react-icons/fa';
@@ -14,9 +14,12 @@ export const PostCard = ({ post }) => {
   const { setShowModal } = useModal();
   const navigate = useNavigate();
   const { userObj, setUserObj } = useUser();
-  if (userObj === undefined) {
-    navigate('/auth/login');
-  }
+  useEffect(() => {
+    if (userObj === undefined) {
+      navigate('/auth/login');
+    }
+  }, [userObj]);
+
   const { dispatch, setLocalComments } = UsePost();
   const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
   const token = localStorage.getItem('token');
@@ -92,7 +95,7 @@ export const PostCard = ({ post }) => {
         </div>
         <div className="post-content">{post.content}</div>
         <div className="bookmark-icon">
-          {userObj.bookmarks.some(obj => obj._id === post._id) ? (
+          {userObj && userObj.bookmarks.some(obj => obj._id === post._id) ? (
             <div onClick={() => removeFromBookmarkHandler()}>
               <BsBookmarkFill />
             </div>

@@ -11,6 +11,7 @@ import {
 import { Myfeed } from '../MyFeed/Myfeed';
 // import bgimage from '../../assets/images/bg-homepage.jpg';
 import './homepage.css';
+
 export const Homepage = () => {
   const navigate = useNavigate();
   useEffect(() => {
