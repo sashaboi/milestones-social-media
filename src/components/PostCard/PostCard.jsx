@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal-context';
 
 export const PostCard = ({ post }) => {
+  console.log(post);
   const { setShowModal } = useModal();
   const navigate = useNavigate();
   const { userObj, setUserObj } = useUser();
@@ -86,11 +87,36 @@ export const PostCard = ({ post }) => {
       }
     );
   };
+  const upvoteComment = comment => {
+    axios
+      .post(`/api/comments/upvote/${post._id}/${comment._id}`, {}, header)
+      .then(
+        response => {
+          dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  };
+  const downvoteComment = comment => {
+    axios
+      .post(`/api/comments/downvote/${post._id}/${comment._id}`, {}, header)
+      .then(
+        response => {
+          dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  };
   return (
     <div className="post-card-parent">
       <div className="post-top-content">
         <div className="profile-data">
           <img src="" alt="profile pic" />
+
           <div className="username-holder">{post.username}</div>
         </div>
         <div className="post-content">{post.content}</div>
@@ -128,6 +154,22 @@ export const PostCard = ({ post }) => {
           <div className="comment-container" key={obj.id}>
             <p>{obj.username}</p>
             <p>{obj.text}</p>
+            <button
+              disabled={obj.votes.upvotedBy?.some(
+                obj => obj._id === userObj._id
+              )}
+              onClick={() => upvoteComment(obj)}
+            >
+              upvote
+            </button>
+            <button
+              disabled={obj.votes.downvotedBy?.some(
+                obj => obj._id === userObj._id
+              )}
+              onClick={() => downvoteComment(obj)}
+            >
+              downvote
+            </button>
           </div>
         ))}
       </div>

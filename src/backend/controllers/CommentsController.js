@@ -212,7 +212,7 @@ export const upvotePostCommentHandler = function (schema, request) {
     ].votes.downvotedBy.filter(currUser => currUser._id !== user._id);
     post.comments[commentIndex].votes.upvotedBy.push(user);
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
-    return new Response(201, {}, { comments: post.comments });
+    return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {
     return new Response(
       500,
@@ -265,7 +265,7 @@ export const downvotePostCommentHandler = function (schema, request) {
     ].votes.upvotedBy.filter(currUser => currUser._id !== user._id);
     post.comments[commentIndex].votes.downvotedBy.push(user);
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
-    return new Response(201, {}, { comments: post.comments });
+    return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {
     return new Response(
       500,
