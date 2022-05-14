@@ -40,3 +40,11 @@
 .post-btn:hover {
   cursor: pointer;
 }
+.comment-container {
+  padding-right: 2rem;
+  padding-left: 2rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+}

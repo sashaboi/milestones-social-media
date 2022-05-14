@@ -4,3 +4,4 @@ export { Navbar } from './Navbar/Navbar.jsx';
 export { PostCard } from './PostCard/PostCard.jsx';
 export { SideBarLeft } from './SidebarLeft/SideBarLeft.jsx';
 export { SideBarRight } from './SideBarRight/SideBarRight.jsx';
+export { Modal } from './Modal/Modal.jsx';

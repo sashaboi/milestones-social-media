@@ -20,7 +20,7 @@ export const Navbar = () => {
           <div className="nav-option">Home</div>
         </Link>
         {token ? (
-          <div>
+          <div className="nav-options-container">
             <div className="nav-option">Hello User </div>
             <div onClick={() => LogoutHandler()} className="nav-option">
               Logout{' '}

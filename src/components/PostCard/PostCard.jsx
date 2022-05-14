@@ -7,11 +7,16 @@ import { UsePost } from '../../context/Post-context';
 import { useUser } from '../../context/User-context';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useModal } from '../../context/Modal-context';
 
 export const PostCard = ({ post }) => {
+  const { setShowModal } = useModal();
   const navigate = useNavigate();
   const { userObj } = useUser();
-  const { dispatch } = UsePost();
+  if (userObj === undefined) {
+    navigate('/auth/login');
+  }
+  const { dispatch, setLocalComments } = UsePost();
   const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
   const LikePostHandler = () => {
     const token = localStorage.getItem('token');
@@ -43,6 +48,12 @@ export const PostCard = ({ post }) => {
     }
   };
 
+  const CommentClickHandler = post => {
+    setLocalComments(post);
+    console.log('this is the post we want to show the comments of:', post);
+
+    setShowModal(true);
+  };
   return (
     <div className="post-card-parent">
       <div className="post-top-content">
@@ -61,10 +72,21 @@ export const PostCard = ({ post }) => {
 
           {post.likes.likeCount}
         </div>
-        <div className="post-comment-button post-btn">
+        <div
+          onClick={() => CommentClickHandler(post)}
+          className="post-comment-button post-btn"
+        >
           <FaRegComment />
           {post.comments.length}
         </div>
+      </div>
+      <div className="comments-section">
+        {post.comments.slice(0, 3).map(obj => (
+          <div className="comment-container" key={obj.id}>
+            <p>{obj.username}</p>
+            <p>{obj.text}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
