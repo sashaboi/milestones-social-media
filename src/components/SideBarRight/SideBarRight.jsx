@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import './sidebarright.css';
 import { useUser } from '../../context/User-context';
+import { useNavigate } from 'react-router-dom';
 export const SideBarRight = () => {
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
+
   const header = { headers: { authorization: token } };
-  const { userObj, setUserObj } = useUser();
-  const [allUsers, setAllUsers] = useState();
-  const allOtherUsers = allUsers.filter(obj => obj._id !== userObj._id);
-  console.log(userObj);
+  const { allUsers, userObj, setUserObj } = useUser();
+
   useEffect(() => {
-    axios.get('/api/users', {}).then(
-      response => {
-        setAllUsers(response.data.users);
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }, []);
+    if (userObj === undefined) {
+      navigate('/auth/login');
+    }
+  }, [userObj]);
+
+  const allOtherUsers = allUsers?.filter(obj => obj._id !== userObj._id);
+  console.log(userObj);
+
   const followUserHandler = obj => {
     axios.post(`/api/users/follow/${obj._id}`, {}, header).then(
       response => {
