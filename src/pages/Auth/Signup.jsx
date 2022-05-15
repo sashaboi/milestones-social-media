@@ -37,8 +37,8 @@ export const Signup = () => {
             <input
               value={email}
               onChange={e => setEmail(e.target.value)}
-              type="email"
-              placeholder="adarshbalika@gmail.com"
+              type="text"
+              placeholder="adarshbalika"
             />
             <label htmlFor="password">Password </label>
             <input

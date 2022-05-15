@@ -9,7 +9,7 @@ import './auth.css';
 const Login = () => {
   const { setUserObj } = useUser();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('adarshbalika@gmail.com');
+  const [email, setEmail] = useState('adarshbalika');
   const [password, setPassword] = useState('adarshBalika123');
 
   const userCred = {
@@ -39,7 +39,7 @@ const Login = () => {
           <div className="inputs-container">
             <label htmlFor="email">Email </label>
             <input
-              type="email"
+              type="text"
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="adarshbalika@gmail.com"
