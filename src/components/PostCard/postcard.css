@@ -28,6 +28,10 @@
   font-size: 1.5rem;
 }
 .profile-data {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
   width: 20vw;
 }
 .post-content {
@@ -47,4 +51,11 @@
   align-items: flex-start;
   justify-content: space-between;
   flex-direction: column;
+}
+.profile-pic-letters {
+  padding: 1rem;
+  max-width: fit-content;
+  color: var(--bg-color);
+  border-radius: 2rem;
+  background-color: var(--secondary-color);
 }

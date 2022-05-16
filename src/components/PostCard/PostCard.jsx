@@ -14,7 +14,8 @@ export const PostCard = ({ post }) => {
   console.log(post);
   const { setShowModal } = useModal();
   const navigate = useNavigate();
-  const { userObj, setUserObj } = useUser();
+  const { userObj, setUserObj, allUsers } = useUser();
+  const userOfPost = allUsers.filter(obj => obj.username === post.username);
 
   const { dispatch, setLocalComments } = UsePost();
   const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
@@ -110,21 +111,29 @@ export const PostCard = ({ post }) => {
     <div className="post-card-parent">
       <div className="post-top-content">
         <div className="profile-data">
-          <img src="" alt="profile pic" />
+          <div className="profile-pic-letters">
+            {userOfPost[0].firstName.slice(0, 1)}
+            {userOfPost[0].lastName.slice(0, 1)}
+          </div>
 
           <div className="username-holder">{post.username}</div>
         </div>
         <div className="post-content">{post.content}</div>
-        <div className="bookmark-icon">
-          {userObj && userObj.bookmarks.some(obj => obj._id === post._id) ? (
-            <div onClick={() => removeFromBookmarkHandler()}>
-              <BsBookmarkFill />
-            </div>
-          ) : (
-            <div onClick={() => addToBookmarkHandler()}>
-              <BsBookmark />
-            </div>
-          )}
+        <div className="options">
+          <div className="bookmark-icon">
+            {userObj && userObj.bookmarks.some(obj => obj._id === post._id) ? (
+              <div onClick={() => removeFromBookmarkHandler()}>
+                <BsBookmarkFill />
+              </div>
+            ) : (
+              <div onClick={() => addToBookmarkHandler()}>
+                <BsBookmark />
+              </div>
+            )}
+          </div>
+          <div className="edit-post">
+            {post.username === userObj.username && <button>Edit</button>}
+          </div>
         </div>
       </div>
       <div className="post-bottom-content">

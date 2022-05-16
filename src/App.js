@@ -2,7 +2,7 @@ import React from 'react';
 import Mockman from 'mockman-js';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Bookmarked, Homepage, Login, Signup, UserProfile } from './pages';
+import { Bookmarked, Homepage, Login, Signup, UserProfile,Profile } from './pages';
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/bookmarks" element={<Bookmarked />} />
         <Route path="/mockman" element={<Mockman />} />
+        <Route path="/myprofile" element={<Profile />} />
       </Routes>
     </div>
   );
