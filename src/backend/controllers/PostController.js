@@ -136,6 +136,7 @@ export const editPostHandler = function (schema, request) {
         }
       );
     }
+
     post = { ...post, ...postData };
     this.db.posts.update({ _id: postId }, post);
     return new Response(201, {}, { posts: this.db.posts });
@@ -239,7 +240,6 @@ export const dislikePostHandler = function (schema, request) {
 
     post.likes.dislikedBy.push(user);
     post = { ...post, likes: { ...post.likes, likedBy: updatedLikedBy } };
-    console.log(post);
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
     return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {

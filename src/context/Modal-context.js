@@ -3,8 +3,11 @@ const ModalContext = createContext();
 
 const ModalProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setshowEditModal] = useState(false);
   return (
-    <ModalContext.Provider value={{ showModal, setShowModal }}>
+    <ModalContext.Provider
+      value={{ showModal, setShowModal, showEditModal, setshowEditModal }}
+    >
       {children}
     </ModalContext.Provider>
   );

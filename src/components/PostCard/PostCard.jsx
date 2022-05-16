@@ -20,13 +20,12 @@ import { useNavigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal-context';
 
 export const PostCard = ({ post }) => {
-  console.log(post);
-  const { setShowModal } = useModal();
+  const { setShowModal, setshowEditModal } = useModal();
   const navigate = useNavigate();
   const { userObj, setUserObj, allUsers } = useUser();
   const userOfPost = allUsers.filter(obj => obj.username === post.username);
 
-  const { dispatch, setLocalComments } = UsePost();
+  const { dispatch, setLocalComments, setLocalpost } = UsePost();
   const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
   const token = localStorage.getItem('token');
   if (token === null) {
@@ -35,10 +34,8 @@ export const PostCard = ({ post }) => {
   const header = { headers: { authorization: token } };
   const LikePostHandler = () => {
     if (hasliked) {
-      console.log('dislike');
       axios.post(`api/posts/dislike/${post._id}`, {}, header).then(
         response => {
-          console.log('dislike response', response.data.posts);
           dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
         },
         error => {
@@ -46,7 +43,6 @@ export const PostCard = ({ post }) => {
         }
       );
     } else {
-      console.log('like');
       axios.post(`api/posts/like/${post._id}`, {}, header).then(
         response => {
           dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
@@ -60,15 +56,12 @@ export const PostCard = ({ post }) => {
 
   const CommentClickHandler = post => {
     setLocalComments(post);
-    console.log('this is the post we want to show the comments of:', post);
 
     setShowModal(true);
   };
   const addToBookmarkHandler = () => {
     axios.post(`/api/users/bookmark/${post._id}`, {}, header).then(
       response => {
-        console.log(response);
-
         const newUserObj = { ...userObj };
         newUserObj.bookmarks = response.data.bookmarks;
         setUserObj(newUserObj);
@@ -81,8 +74,6 @@ export const PostCard = ({ post }) => {
   const removeFromBookmarkHandler = () => {
     axios.post(`/api/users/remove-bookmark/${post._id}`, {}, header).then(
       response => {
-        console.log(response);
-
         const newUserObj = { ...userObj };
         newUserObj.bookmarks = response.data.bookmarks;
         setUserObj(newUserObj);
@@ -116,6 +107,10 @@ export const PostCard = ({ post }) => {
         }
       );
   };
+  const EdiPostClickHandler = () => {
+    setLocalpost(post);
+    setshowEditModal(true);
+  };
   return (
     <div className="post-card-parent">
       <div className="post-top-content">
@@ -142,7 +137,10 @@ export const PostCard = ({ post }) => {
           </div>
           <div className="edit-post">
             {post.username === userObj.username && (
-              <button className="secondary-btn">
+              <button
+                onClick={() => EdiPostClickHandler()}
+                className="secondary-btn"
+              >
                 <BsThreeDotsVertical />
               </button>
             )}

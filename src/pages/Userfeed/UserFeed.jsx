@@ -13,9 +13,7 @@ export const UserFeed = () => {
     }
   }, [token]);
   const { userObj } = useUser();
-  console.log(userObj);
   const { state } = UsePost();
-  console.log(state);
   const UserPostState = state.filter(obj => obj.username === userObj.username);
 
   return (

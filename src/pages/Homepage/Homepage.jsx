@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   CreatePost,
+  EditModal,
   Footer,
   Modal,
   Navbar,
@@ -24,6 +25,7 @@ export const Homepage = () => {
   return (
     <div className="app-layout">
       <Modal />
+      <EditModal />
       <Navbar />
       <div className="home-page-container">
         <SideBarLeft />
