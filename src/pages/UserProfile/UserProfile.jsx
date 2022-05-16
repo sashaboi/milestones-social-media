@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   CreatePost,
   Footer,
+  Modal,
   Navbar,
   SideBarLeft,
   SideBarRight,
@@ -20,6 +21,7 @@ export const UserProfile = () => {
   return (
     <div className="app-layout">
       <Navbar />
+      <Modal />
       <div className="home-page-container">
         <SideBarLeft />
         <div className="feed-container">
