@@ -46,7 +46,7 @@ export const CreatePost = () => {
       <div className="post-button">
         <button
           onClick={() => CreatePostHandler()}
-          disabled={postText.length > 140}
+          disabled={postText.length > 140 || postText.length === 0}
           className="primary-btn"
         >
           Post
