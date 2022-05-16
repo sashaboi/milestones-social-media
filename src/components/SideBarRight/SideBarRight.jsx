@@ -50,9 +50,19 @@ export const SideBarRight = () => {
             {obj.firstName}
             {obj.lastName}
             {userObj?.following.some(userobj => userobj._id === obj._id) ? (
-              <button onClick={() => unfollowUserHandler(obj)}>Unfollow</button>
+              <button
+                className="secondary-btn"
+                onClick={() => unfollowUserHandler(obj)}
+              >
+                Unfollow
+              </button>
             ) : (
-              <button onClick={() => followUserHandler(obj)}>follow</button>
+              <button
+                className="secondary-btn"
+                onClick={() => followUserHandler(obj)}
+              >
+                Follow
+              </button>
             )}
           </div>
         ))}

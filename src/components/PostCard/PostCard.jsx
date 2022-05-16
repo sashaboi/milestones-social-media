@@ -2,8 +2,17 @@ import React from 'react';
 import './postcard.css';
 
 import { FaRegComment } from 'react-icons/fa';
-import { AiOutlineLike, AiFillLike } from 'react-icons/ai';
-import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
+import {
+  AiOutlineLike,
+  AiFillLike,
+  AiOutlineDislike,
+  AiFillDislike,
+} from 'react-icons/ai';
+import {
+  BsBookmark,
+  BsBookmarkFill,
+  BsThreeDotsVertical,
+} from 'react-icons/bs';
 import { UsePost } from '../../context/Post-context';
 import { useUser } from '../../context/User-context';
 import axios from 'axios';
@@ -132,50 +141,77 @@ export const PostCard = ({ post }) => {
             )}
           </div>
           <div className="edit-post">
-            {post.username === userObj.username && <button>Edit</button>}
+            {post.username === userObj.username && (
+              <button className="secondary-btn">
+                <BsThreeDotsVertical />
+              </button>
+            )}
           </div>
         </div>
       </div>
       <div className="post-bottom-content">
-        <div
-          onClick={() => LikePostHandler()}
-          className="post-like-button post-btn"
-        >
-          {hasliked ? <AiFillLike /> : <AiOutlineLike />}
+        <div className="post-buttons">
+          <div
+            onClick={() => LikePostHandler()}
+            className="post-like-button post-btn"
+          >
+            {hasliked ? <AiFillLike /> : <AiOutlineLike />}
 
-          {post.likes.likeCount}
-        </div>
-        <div
-          onClick={() => CommentClickHandler(post)}
-          className="post-comment-button post-btn"
-        >
-          <FaRegComment />
-          {post.comments.length}
-        </div>
-      </div>
-      <div className="comments-section">
-        {post.comments.slice(0, 3).map(obj => (
-          <div className="comment-container" key={obj.id}>
-            <p>{obj.username}</p>
-            <p>{obj.text}</p>
-            <button
-              disabled={obj.votes.upvotedBy?.some(
-                obj => obj._id === userObj._id
-              )}
-              onClick={() => upvoteComment(obj)}
-            >
-              upvote
-            </button>
-            <button
-              disabled={obj.votes.downvotedBy?.some(
-                obj => obj._id === userObj._id
-              )}
-              onClick={() => downvoteComment(obj)}
-            >
-              downvote
-            </button>
+            {post.likes.likeCount}
           </div>
-        ))}
+          <div
+            onClick={() => CommentClickHandler(post)}
+            className="post-comment-button post-btn"
+          >
+            <FaRegComment />
+            {post.comments.length}
+          </div>
+        </div>
+        <div className="comments-section">
+          {post.comments.slice(0, 3).map(obj => (
+            <div className="comment-container" key={obj.id}>
+              <div className="profile-pic-letters comment-dp">
+                {obj.username.slice(0, 2).toUpperCase()}
+              </div>
+              <div className="comment-content">
+                <strong>
+                  <p>{obj.username}</p>
+                </strong>
+                <p>{obj.text}</p>
+              </div>
+              <div className="comment-buttons">
+                <button
+                  disabled={obj.votes.upvotedBy?.some(
+                    obj => obj._id === userObj._id
+                  )}
+                  onClick={() => upvoteComment(obj)}
+                  className="comment-vote-btn"
+                >
+                  {obj.votes.upvotedBy?.some(obj => obj._id === userObj._id) ? (
+                    <AiFillLike />
+                  ) : (
+                    <AiOutlineLike />
+                  )}
+                </button>
+                <button
+                  disabled={obj.votes.downvotedBy?.some(
+                    obj => obj._id === userObj._id
+                  )}
+                  onClick={() => downvoteComment(obj)}
+                  className="comment-vote-btn"
+                >
+                  {obj.votes.downvotedBy?.some(
+                    obj => obj._id === userObj._id
+                  ) ? (
+                    <AiFillDislike />
+                  ) : (
+                    <AiOutlineDislike />
+                  )}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
