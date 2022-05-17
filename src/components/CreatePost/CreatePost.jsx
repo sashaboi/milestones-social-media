@@ -22,7 +22,6 @@ export const CreatePost = () => {
   const CreatePostHandler = () => {
     axios.post('/api/posts', { postData: postText }, header).then(
       response => {
-        console.log('create post response', response.data.posts);
         dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
         setPostText('');
       },

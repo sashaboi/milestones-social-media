@@ -17,12 +17,10 @@ export const SideBarRight = () => {
   }, [userObj]);
 
   const allOtherUsers = allUsers?.filter(obj => obj._id !== userObj._id);
-  console.log(userObj);
 
   const followUserHandler = obj => {
     axios.post(`/api/users/follow/${obj._id}`, {}, header).then(
       response => {
-        console.log(response);
         setUserObj(response.data.user);
       },
       error => {
@@ -33,7 +31,6 @@ export const SideBarRight = () => {
   const unfollowUserHandler = obj => {
     axios.post(`/api/users/unfollow/${obj._id}`, {}, header).then(
       response => {
-        console.log(response);
         setUserObj(response.data.user);
       },
       error => {

@@ -19,7 +19,6 @@ const Login = () => {
   const LoginClickHandler = () => {
     axios.post('/api/auth/login', userCred).then(
       response => {
-        console.log(response);
         setUserObj(response.data.foundUser);
         localStorage.setItem('token', response.data.encodedToken);
         navigate('/');

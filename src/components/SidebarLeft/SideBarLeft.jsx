@@ -8,7 +8,13 @@ export const SideBarLeft = () => {
   const navigate = useNavigate();
   return (
     <div className="sidebar">
-      <h2>Profile</h2>
+      <button
+        className="sidebar-nav-btn primary-btn"
+        onClick={() => navigate('/')}
+      >
+        <CgProfile />
+        Home
+      </button>
       <button
         className="sidebar-nav-btn primary-btn"
         onClick={() => navigate('/profile')}

@@ -16,7 +16,6 @@ export const Profile = () => {
   const header = { headers: { authorization: token } };
   const { userObj, setUserObj } = useUser();
 
-  console.log(userObj);
   const [newFirstName, setNewFirstName] = useState(userObj.firstName);
   const [newLastName, setnewLastName] = useState(userObj.lastName);
   const [newPassword, setnewPassword] = useState(userObj.password);
@@ -32,7 +31,6 @@ export const Profile = () => {
     };
     axios.post(`/api/users/edit`, userData, header).then(
       response => {
-        console.log('edit form response', response);
         setUserObj(response.data.user);
         navigate('/');
       },

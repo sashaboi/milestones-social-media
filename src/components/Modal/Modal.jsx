@@ -18,7 +18,6 @@ export const Modal = () => {
     return null;
   }
   const sendComment = () => {
-    console.log('make comment', inputComment);
     const token = localStorage.getItem('token');
     if (token === null) {
       navigate('/auth/login');
