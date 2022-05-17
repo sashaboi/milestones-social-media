@@ -3,7 +3,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Footer, Navbar } from '../../components';
 import axios from 'axios';
+import { SetloggedInUser } from '../../redux-store/alluserSlice/alluserSlice';
+
+import { useDispatch } from 'react-redux';
 export const Signup = () => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [email, setEmail] = useState('onkar@gmail.com');
   const [password, setPassword] = useState('adarshBalika123');
@@ -17,6 +22,7 @@ export const Signup = () => {
   const SignupClickHandler = () => {
     axios.post('/api/auth/signup', userCred).then(
       response => {
+        dispatch(SetloggedInUser(response.data.createdUser));
         localStorage.setItem('token', response.data.encodedToken);
         navigate('/');
       },

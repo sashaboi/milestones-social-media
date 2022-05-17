@@ -1,42 +1,60 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import './sidebarright.css';
-import { useUser } from '../../context/User-context';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  getUsers,
+  followUser,
+  unFollowUser,
+} from '../../redux-store/alluserSlice/alluserSlice';
 export const SideBarRight = () => {
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.allUsers);
+
+  console.log('state from sidebar ', state);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  const header = { headers: { authorization: token } };
-  const { allUsers, userObj, setUserObj } = useUser();
-
   useEffect(() => {
-    if (userObj === undefined) {
+    if (state.loggedinUser === undefined) {
       navigate('/auth/login');
     }
-  }, [userObj]);
+  }, [state.loggedinUser]);
+  /* 
 
-  const allOtherUsers = allUsers?.filter(obj => obj._id !== userObj._id);
+
+REDUXXX
+
+
+*/
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await dispatch(getUsers());
+        if (response.error)
+          throw new Error('Could not get posts. Try again later', 'error');
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
+  const allOtherUsers = state.users?.filter(
+    obj => obj._id !== state.loggedinUser._id
+  );
+  /* 
+
+
+REDUXXX
+
+
+*/
 
   const followUserHandler = obj => {
-    axios.post(`/api/users/follow/${obj._id}`, {}, header).then(
-      response => {
-        setUserObj(response.data.user);
-      },
-      error => {
-        console.log(error.response.data.message);
-      }
-    );
+    dispatch(followUser({ token, userId: obj._id }));
   };
   const unfollowUserHandler = obj => {
-    axios.post(`/api/users/unfollow/${obj._id}`, {}, header).then(
-      response => {
-        setUserObj(response.data.user);
-      },
-      error => {
-        console.log(error.response.data.message);
-      }
-    );
+    dispatch(unFollowUser({ token, userId: obj._id }));
   };
   return (
     <div className="sidebar">
@@ -46,7 +64,9 @@ export const SideBarRight = () => {
           <div className="user-obj" key={obj._id}>
             {obj.firstName}
             {obj.lastName}
-            {userObj?.following.some(userobj => userobj._id === obj._id) ? (
+            {state.loggedinUser.user?.following.some(
+              userobj => userobj._id === obj._id
+            ) ? (
               <button
                 className="secondary-btn"
                 onClick={() => unfollowUserHandler(obj)}

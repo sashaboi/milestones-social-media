@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 import { Footer, Navbar } from '../../components';
 import axios from 'axios';
 import { useUser } from '../../context/User-context';
-
+import { SetloggedInUser } from '../../redux-store/alluserSlice/alluserSlice';
 import './auth.css';
+import { useDispatch } from 'react-redux';
 const Login = () => {
+  const dispatch = useDispatch();
   const { setUserObj } = useUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState('adarshbalika');
@@ -19,7 +21,9 @@ const Login = () => {
   const LoginClickHandler = () => {
     axios.post('/api/auth/login', userCred).then(
       response => {
+        dispatch(SetloggedInUser(response.data.foundUser));
         setUserObj(response.data.foundUser);
+
         localStorage.setItem('token', response.data.encodedToken);
         navigate('/');
       },

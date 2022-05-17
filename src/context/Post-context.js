@@ -18,8 +18,6 @@ const PostProvider = ({ children }) => {
     switch (action.type) {
       case 'LOAD_POSTS':
         return action.payload;
-      case 'ADD_COMMENT':
-        return state;
 
       default:
         console.log('default reached');

@@ -14,19 +14,22 @@ import {
   BsThreeDotsVertical,
 } from 'react-icons/bs';
 import { UsePost } from '../../context/Post-context';
-import { useUser } from '../../context/User-context';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal-context';
+import { useSelector } from 'react-redux';
+import { SetloggedInUser } from '../../redux-store/alluserSlice/alluserSlice';
 
 export const PostCard = ({ post }) => {
+  const state = useSelector(state => state.allUsers);
   const { setShowModal, setshowEditModal } = useModal();
   const navigate = useNavigate();
-  const { userObj, setUserObj, allUsers } = useUser();
-  const userOfPost = allUsers.filter(obj => obj.username === post.username);
+  const userOfPost = state.users.filter(obj => obj.username === post.username);
 
   const { dispatch, setLocalComments, setLocalpost } = UsePost();
-  const hasliked = post.likes.likedBy.some(obj => obj._id === userObj._id);
+  const hasliked = post.likes.likedBy.some(
+    obj => obj._id === state.loggedinUser._id
+  );
   const token = localStorage.getItem('token');
   if (token === null) {
     navigate('/auth/login');
@@ -62,9 +65,9 @@ export const PostCard = ({ post }) => {
   const addToBookmarkHandler = () => {
     axios.post(`/api/users/bookmark/${post._id}`, {}, header).then(
       response => {
-        const newUserObj = { ...userObj };
+        const newUserObj = { ...state.loggedinUser };
         newUserObj.bookmarks = response.data.bookmarks;
-        setUserObj(newUserObj);
+        dispatch(SetloggedInUser(newUserObj));
       },
       error => {
         console.log(error);
@@ -74,9 +77,9 @@ export const PostCard = ({ post }) => {
   const removeFromBookmarkHandler = () => {
     axios.post(`/api/users/remove-bookmark/${post._id}`, {}, header).then(
       response => {
-        const newUserObj = { ...userObj };
+        const newUserObj = { ...state.loggedinUser };
         newUserObj.bookmarks = response.data.bookmarks;
-        setUserObj(newUserObj);
+        dispatch(SetloggedInUser(newUserObj));
       },
       error => {
         console.log(error);
@@ -125,7 +128,8 @@ export const PostCard = ({ post }) => {
         <div className="post-content">{post.content}</div>
         <div className="options">
           <div className="bookmark-icon">
-            {userObj && userObj.bookmarks.some(obj => obj._id === post._id) ? (
+            {state.loggedinUser &&
+            state.loggedinUser.bookmarks.some(obj => obj._id === post._id) ? (
               <div onClick={() => removeFromBookmarkHandler()}>
                 <BsBookmarkFill />
               </div>
@@ -136,7 +140,7 @@ export const PostCard = ({ post }) => {
             )}
           </div>
           <div className="edit-post">
-            {post.username === userObj.username && (
+            {post.username === state.loggedinUser.username && (
               <button
                 onClick={() => EdiPostClickHandler()}
                 className="secondary-btn"
@@ -180,12 +184,14 @@ export const PostCard = ({ post }) => {
               <div className="comment-buttons">
                 <button
                   disabled={obj.votes.upvotedBy?.some(
-                    obj => obj._id === userObj._id
+                    obj => obj._id === state.loggedinUser._id
                   )}
                   onClick={() => upvoteComment(obj)}
                   className="comment-vote-btn"
                 >
-                  {obj.votes.upvotedBy?.some(obj => obj._id === userObj._id) ? (
+                  {obj.votes.upvotedBy?.some(
+                    obj => obj._id === state.loggedinUser._id
+                  ) ? (
                     <AiFillLike />
                   ) : (
                     <AiOutlineLike />
@@ -193,13 +199,13 @@ export const PostCard = ({ post }) => {
                 </button>
                 <button
                   disabled={obj.votes.downvotedBy?.some(
-                    obj => obj._id === userObj._id
+                    obj => obj._id === state.loggedinUser._id
                   )}
                   onClick={() => downvoteComment(obj)}
                   className="comment-vote-btn"
                 >
                   {obj.votes.downvotedBy?.some(
-                    obj => obj._id === userObj._id
+                    obj => obj._id === state.loggedinUser._id
                   ) ? (
                     <AiFillDislike />
                   ) : (
