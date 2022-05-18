@@ -35,3 +35,13 @@
 .inputs-container > label {
   font-size: 1.2rem;
 }
+.small-loader {
+  font-size: 0.1rem;
+  display: flex;
+}
+.horizontal-align {
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1rem;
+}

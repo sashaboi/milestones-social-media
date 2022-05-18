@@ -1,17 +1,12 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UsePost } from '../../context/Post-context';
-
+import { useDispatch } from 'react-redux';
+import { addPost } from '../../redux-store/postSlice/postSlice';
 import './createpost.css';
 export const CreatePost = () => {
-  const { dispatch } = UsePost();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const token = localStorage.getItem('token');
-  if (token === null) {
-    navigate('/auth/login');
-  }
-  const header = { headers: { authorization: token } };
+
   const [postText, setPostText] = useState('');
   const [letterCounter, setLetterCounter] = useState('');
   useEffect(() => {
@@ -20,15 +15,8 @@ export const CreatePost = () => {
       : setLetterCounter('letter-counter-safe');
   }, [postText]);
   const CreatePostHandler = () => {
-    axios.post('/api/posts', { postData: postText }, header).then(
-      response => {
-        dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
-        setPostText('');
-      },
-      error => {
-        console.log(error.response.data.message);
-      }
-    );
+    dispatch(addPost({ token, postcontent: postText }));
+    setPostText('');
   };
   return (
     <div>

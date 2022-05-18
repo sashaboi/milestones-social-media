@@ -3,18 +3,17 @@ import React, { useState, useEffect } from 'react';
 import './modal.css';
 import { useModal } from '../../context/Modal-context';
 import { UsePost } from '../../context/Post-context';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { editPost } from '../../redux-store/postSlice/postSlice';
+// const dispatch = useDispatch();
+// const postState = useSelector(state => state.posts);
+
 export const EditModal = () => {
-  const { localPost, dispatch } = UsePost();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { localPost } = UsePost();
   const token = localStorage.getItem('token');
-  if (token === null) {
-    navigate('/auth/login');
-  }
-  const header = { headers: { authorization: token } };
+
   const { showEditModal, setshowEditModal } = useModal();
-  console.log('localpost from edit modal', localPost);
   useEffect(() => {
     setNewPostText(localPost?.content);
   }, [localPost]);
@@ -24,23 +23,11 @@ export const EditModal = () => {
     return null;
   }
   const postdatatosend = { ...localPost, content: newPostText };
-  console.log(postdatatosend);
   const saveEditedPostHandler = () => {
-    axios
-      .post(
-        `/api/posts/edit/${localPost._id}`,
-        { postData: postdatatosend },
-        header
-      )
-      .then(
-        response => {
-          dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
-          setshowEditModal(false);
-        },
-        error => {
-          console.log(error.response.data.message);
-        }
-      );
+    dispatch(
+      editPost({ token, finalpostdata: postdatatosend, postid: localPost._id })
+    );
+    setshowEditModal(false);
   };
   return (
     <div className="modal-parent-post">

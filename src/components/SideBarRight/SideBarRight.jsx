@@ -1,68 +1,94 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import './sidebarright.css';
-import { useUser } from '../../context/User-context';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import LoadingSpin from 'react-loading-spin';
+import {
+  getUsers,
+  followUser,
+  unFollowUser,
+} from '../../redux-store/alluserSlice/alluserSlice';
 export const SideBarRight = () => {
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.allUsers);
+
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  const header = { headers: { authorization: token } };
-  const { allUsers, userObj, setUserObj } = useUser();
+  /* 
 
+
+REDUXXX
+
+
+*/
   useEffect(() => {
-    if (userObj === undefined) {
+    (async () => {
+      try {
+        const response = await dispatch(getUsers());
+        if (response.error)
+          throw new Error('Could not get posts. Try again later', 'error');
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
+  const allOtherUsers = state.users?.filter(
+    obj => obj._id !== state.loggedinUser._id
+  );
+  useEffect(() => {
+    console.log('logged in user', state.loggedinUser);
+    if (Object.keys(state.loggedinUser).length === 0) {
+      console.log('reached sidebar auth checker');
       navigate('/auth/login');
     }
-  }, [userObj]);
+  }, [state]);
+  /* 
 
-  const allOtherUsers = allUsers?.filter(obj => obj._id !== userObj._id);
+
+REDUXXX
+
+
+*/
 
   const followUserHandler = obj => {
-    axios.post(`/api/users/follow/${obj._id}`, {}, header).then(
-      response => {
-        setUserObj(response.data.user);
-      },
-      error => {
-        console.log(error.response.data.message);
-      }
-    );
+    dispatch(followUser({ token, userId: obj._id }));
   };
   const unfollowUserHandler = obj => {
-    axios.post(`/api/users/unfollow/${obj._id}`, {}, header).then(
-      response => {
-        setUserObj(response.data.user);
-      },
-      error => {
-        console.log(error.response.data.message);
-      }
-    );
+    dispatch(unFollowUser({ token, userId: obj._id }));
   };
   return (
     <div className="sidebar">
       <h2>Suggested users</h2>
       <div className="users-container">
-        {allOtherUsers?.map(obj => (
-          <div className="user-obj" key={obj._id}>
-            {obj.firstName}
-            {obj.lastName}
-            {userObj?.following.some(userobj => userobj._id === obj._id) ? (
-              <button
-                className="secondary-btn"
-                onClick={() => unfollowUserHandler(obj)}
-              >
-                Unfollow
-              </button>
-            ) : (
-              <button
-                className="secondary-btn"
-                onClick={() => followUserHandler(obj)}
-              >
-                Follow
-              </button>
-            )}
-          </div>
-        ))}
+        {state.loading ? (
+          <LoadingSpin />
+        ) : (
+          allOtherUsers?.map(obj => (
+            <div className="user-obj" key={obj._id}>
+              {obj.firstName}
+              {obj.lastName}
+              {state.loggedinUser?.following.some(
+                userobj => userobj._id === obj._id
+              ) ? (
+                <button
+                  className="secondary-btn"
+                  onClick={() => unfollowUserHandler(obj)}
+                >
+                  Unfollow
+                </button>
+              ) : (
+                <button
+                  className="secondary-btn"
+                  onClick={() => followUserHandler(obj)}
+                >
+                  Follow
+                </button>
+              )}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 import React from 'react';
-import { useUser } from '../../context/User-context';
+// import { useUser } from '../../context/User-context';
 import { PostCard } from '../../components/PostCard/PostCard';
-
+import { useSelector } from 'react-redux';
 export const BookmarkedFeed = () => {
-  const { userObj } = useUser();
+  const state = useSelector(state => state.allUsers);
   return (
     <div className="feed-parent">
-      {userObj.bookmarks.map(obj => (
+      {state.loggedinUser.bookmarks.map(obj => (
         <PostCard key={obj._id} post={obj} />
       ))}
     </div>

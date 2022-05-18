@@ -2,12 +2,13 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Footer, Navbar } from '../../components';
-import axios from 'axios';
-import { useUser } from '../../context/User-context';
-
+import LoadingSpin from 'react-loading-spin';
+import { SetloggedInUser } from '../../redux-store/alluserSlice/alluserSlice';
 import './auth.css';
+import { useDispatch, useSelector } from 'react-redux';
 const Login = () => {
-  const { setUserObj } = useUser();
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.allUsers);
   const navigate = useNavigate();
   const [email, setEmail] = useState('adarshbalika');
   const [password, setPassword] = useState('adarshBalika123');
@@ -17,17 +18,22 @@ const Login = () => {
     password: password,
   };
   const LoginClickHandler = () => {
-    axios.post('/api/auth/login', userCred).then(
-      response => {
-        setUserObj(response.data.foundUser);
-        localStorage.setItem('token', response.data.encodedToken);
+    dispatch(SetloggedInUser(userCred))
+      .unwrap()
+      .then(() => {
         navigate('/');
-      },
-      error => {
-        console.log(error.response.data.errors[0]);
-      }
-    );
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    console.log('loading before navigating', state.loading);
   };
+  // useEffect(() => {
+  //   if (state.loggedinUser._id) {
+  //     navigate('/');
+  //   }
+  // }, [state.loggedinUser._id]);
+
   return (
     <div>
       <Navbar />
@@ -50,9 +56,14 @@ const Login = () => {
               type="password"
               placeholder="adarshBalika123"
             />
-            <button onClick={() => LoginClickHandler()} className="primary-btn">
-              Login
+            <button
+              onClick={() => LoginClickHandler()}
+              className="primary-btn horizontal-align"
+            >
+              <div>Login</div>
+              <div className="small-loader"></div>
             </button>
+            {state.loading && <LoadingSpin size={20} />}
           </div>
           <hr />
           {/* <div className="extra-buttons-auth">

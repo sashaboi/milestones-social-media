@@ -15,7 +15,31 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 50vw;
+  gap: 1rem;
+
+  width: 40vw;
   height: 50vh;
   background-color: var(--bg-color);
+  border-radius: 1rem;
+}
+.make-comment {
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.make-comment > input {
+  padding: 0.5rem;
+}
+.make-comment-textarea {
+  font-size: 0.8rem;
+}
+.close-btn {
+  background-color: none;
+  border: none;
+  font-size: 2rem;
+}
+.close-btn:hover {
+  cursor: pointer;
 }

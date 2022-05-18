@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import {
   Footer,
@@ -7,37 +6,33 @@ import {
   SideBarLeft,
   SideBarRight,
 } from '../../components';
-import { useUser } from '../../context/User-context';
 import { useNavigate } from 'react-router-dom';
 import './profile.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { editProfile } from '../../redux-store/alluserSlice/alluserSlice';
 export const Profile = () => {
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.allUsers);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const header = { headers: { authorization: token } };
-  const { userObj, setUserObj } = useUser();
 
-  const [newFirstName, setNewFirstName] = useState(userObj.firstName);
-  const [newLastName, setnewLastName] = useState(userObj.lastName);
-  const [newPassword, setnewPassword] = useState(userObj.password);
+  const [newFirstName, setNewFirstName] = useState(
+    state.loggedinUser.firstName
+  );
+  const [newLastName, setnewLastName] = useState(state.loggedinUser.lastName);
+  const [newPassword, setnewPassword] = useState(state.loggedinUser.password);
   const [toggle, settoggle] = useState('password');
 
   const EditForm = () => {
-    const userData = {
+    const userDatatosend = {
       userData: {
         firstName: newFirstName,
         lastName: newLastName,
         password: newPassword,
       },
     };
-    axios.post(`/api/users/edit`, userData, header).then(
-      response => {
-        setUserObj(response.data.user);
-        navigate('/');
-      },
-      error => {
-        console.log(error.response.data.message);
-      }
-    );
+    dispatch(editProfile({ token, profiledata: userDatatosend }));
+    navigate('/');
   };
   return (
     <div className="app-layout">

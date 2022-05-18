@@ -2,3 +2,25 @@
   text-align: center;
   padding-bottom: 2rem;
 }
+.categories-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+.category-options {
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  border: solid 1px black;
+  background-color: rgba(1, 1, 1, 0);
+}
+.category-options:hover {
+  cursor: pointer;
+  color: var(--bg-color);
+  background-color: var(--secondary-color);
+}
