@@ -3,58 +3,66 @@ import React, { useState } from 'react';
 import './modal.css';
 import { useModal } from '../../context/Modal-context';
 import { UsePost } from '../../context/Post-context';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// import axios from 'axios';
+// import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addComment } from '../../redux-store/postSlice/postSlice';
+import { AiFillCloseCircle } from 'react-icons/ai';
 export const Modal = () => {
-  const navigate = useNavigate();
+  // const reduxState = useSelector(state => state.posts);
+
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const [inputComment, setInputComment] = useState();
   const { showModal, setShowModal } = useModal();
-  const { localComments, dispatch, state } = UsePost();
-  const indexOfStateToMap = state.findIndex(
-    obj => obj._id === localComments._id
-  );
-
+  const { localComments } = UsePost();
+  // const indexOfStateToMap = state.findIndex(
+  //   obj => obj._id === localComments._id
+  // );
+  const token = localStorage.getItem('token');
   if (!showModal) {
     return null;
   }
   const sendComment = () => {
-    const token = localStorage.getItem('token');
-    if (token === null) {
-      navigate('/auth/login');
-    }
-    const header = { headers: { authorization: token } };
-    axios
-      .post(
-        `/api/comments/add/${localComments._id}`,
-        { commentData: inputComment },
-        header
-      )
-      .then(
-        response => {
-          dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
-          setInputComment('');
-        },
-        error => {
-          console.log(error.response.data.message);
-        }
-      );
+    dispatch(
+      addComment({
+        token,
+        postcontent: inputComment,
+        postid: localComments._id,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        setShowModal(!showModal);
+        setInputComment('');
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
   return (
     <div className="modal-parent">
       <div className="modal-container">
-        <h3>comments</h3>
+        <h3>Add Comment</h3>
         <div className="make-comment">
-          <input
+          <textarea
             value={inputComment}
             onChange={e => setInputComment(e.target.value)}
             type="text"
+            cols="40"
+            rows="3"
+            className="make-comment-textarea"
           />
-          <button onClick={() => sendComment()}>Post</button>
+          <button className="primary-btn" onClick={() => sendComment()}>
+            Post Comment
+          </button>
         </div>
-        {state[indexOfStateToMap].comments.map(obj => (
+        {/* {state[indexOfStateToMap].comments.map(obj => (
           <div key={obj._id}>{obj.text}</div>
-        ))}
-        <button onClick={() => setShowModal(!showModal)}>Close</button>
+        ))} */}
+        <button className="close-btn" onClick={() => setShowModal(!showModal)}>
+          <AiFillCloseCircle />
+        </button>
       </div>
     </div>
   );

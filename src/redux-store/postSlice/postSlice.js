@@ -132,6 +132,24 @@ export const addPost = createAsyncThunk(
     }
   }
 );
+export const addComment = createAsyncThunk(
+  'posts/addComment',
+  async ({ token, postcontent, postid }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `/api/comments/add/${postid}`,
+        { commentData: postcontent },
+
+        { headers: { authorization: token } }
+      );
+      console.log(data);
+      return data.posts;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const postSlice = createSlice({
   name: 'posts',
@@ -147,6 +165,11 @@ export const postSlice = createSlice({
       console.log('reached date reducer');
       state.posts.sort(function (a, b) {
         return dayjs(a.createdAt).isBefore(dayjs(b.createdAt)) ? 1 : -1;
+      });
+    },
+    sortbycomments: state => {
+      state.posts.sort(function (a, b) {
+        return b.comments.length - a.comments.length;
       });
     },
   },
@@ -239,10 +262,23 @@ export const postSlice = createSlice({
       .addCase(addPost.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(addComment.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        console.log(action);
+        state.posts = action.payload;
+        state.loading = false;
+      })
+      .addCase(addComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { sortbylikes, sortbydate } = postSlice.actions;
+export const { sortbylikes, sortbydate, sortbycomments } = postSlice.actions;
 
 export default postSlice.reducer;

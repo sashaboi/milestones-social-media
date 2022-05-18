@@ -96,8 +96,17 @@ export const posts = [
       },
       {
         _id: uuid(),
-        username: 'sohamshah',
-        text: 'Wow!',
+        username: 'shubhamsoni',
+        text: 'WOWOWOW',
+        votes: {
+          upvotedBy: [],
+          downvotedBy: [],
+        },
+      },
+      {
+        _id: uuid(),
+        username: 'shubhamsoni',
+        text: 'THIS IS INSANE',
         votes: {
           upvotedBy: [],
           downvotedBy: [],

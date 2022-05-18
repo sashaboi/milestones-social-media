@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { PostCard } from '../../components/PostCard/PostCard';
 import { BiTrendingUp, BiLike } from 'react-icons/bi';
 import { MdOutlineWatchLater } from 'react-icons/md';
-import { sortbylikes, sortbydate } from '../../redux-store/postSlice/postSlice';
+import {
+  sortbylikes,
+  sortbydate,
+  sortbycomments,
+} from '../../redux-store/postSlice/postSlice';
 import './myfeed.css';
 // import LoadingSpin from 'react-loading-spin';
 export const Myfeed = () => {
@@ -29,9 +33,12 @@ export const Myfeed = () => {
           <MdOutlineWatchLater />
           Recent
         </button>
-        <button className="category-options">
+        <button
+          onClick={() => dispatch(sortbycomments())}
+          className="category-options"
+        >
           <BiLike />
-          Most Liked
+          Most commented
         </button>
       </div>
       <hr />
