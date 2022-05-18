@@ -1,11 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { PostCard } from '../../components/PostCard/PostCard';
 import { BiTrendingUp, BiLike } from 'react-icons/bi';
 import { MdOutlineWatchLater } from 'react-icons/md';
+import { sortbylikes, sortbydate } from '../../redux-store/postSlice/postSlice';
 import './myfeed.css';
 // import LoadingSpin from 'react-loading-spin';
 export const Myfeed = () => {
+  const dispatch = useDispatch();
   const state = useSelector(state => state.posts);
   console.log('my feed rerendered');
   // const userState = useSelector(state => state.allUsers);
@@ -13,11 +15,17 @@ export const Myfeed = () => {
     <div className="feed-parent">
       <div className="categories-container">
         <p>Sort by:</p>
-        <button className="category-options ">
+        <button
+          onClick={() => dispatch(sortbylikes())}
+          className="category-options "
+        >
           <BiTrendingUp />
           Trending
         </button>
-        <button className="category-options">
+        <button
+          onClick={() => dispatch(sortbydate())}
+          className="category-options"
+        >
           <MdOutlineWatchLater />
           Recent
         </button>

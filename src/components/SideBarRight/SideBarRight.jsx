@@ -15,11 +15,6 @@ export const SideBarRight = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
-    if (state.loggedinUser === undefined) {
-      navigate('/auth/login');
-    }
-  }, [state.loggedinUser]);
   /* 
 
 
@@ -42,6 +37,13 @@ REDUXXX
   const allOtherUsers = state.users?.filter(
     obj => obj._id !== state.loggedinUser._id
   );
+  useEffect(() => {
+    console.log('logged in user', state.loggedinUser);
+    if (Object.keys(state.loggedinUser).length === 0) {
+      console.log('reached sidebar auth checker');
+      navigate('/auth/login');
+    }
+  }, [state]);
   /* 
 
 

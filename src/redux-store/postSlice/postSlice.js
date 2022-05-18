@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import dayjs from 'dayjs';
+
 const initialState = {
   status: 'idle',
   error: null,
@@ -134,7 +136,20 @@ export const addPost = createAsyncThunk(
 export const postSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    sortbylikes: state => {
+      console.log('reached reducer');
+      state.posts.sort(function (a, b) {
+        return b.likes.likeCount - a.likes.likeCount;
+      });
+    },
+    sortbydate: state => {
+      console.log('reached date reducer');
+      state.posts.sort(function (a, b) {
+        return dayjs(a.createdAt).isBefore(dayjs(b.createdAt)) ? 1 : -1;
+      });
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(getPosts.pending, state => {
@@ -228,6 +243,6 @@ export const postSlice = createSlice({
   },
 });
 
-// export const {} = postSlice.actions;
+export const { sortbylikes, sortbydate } = postSlice.actions;
 
 export default postSlice.reducer;
