@@ -4,7 +4,7 @@ const initialState = {
   status: 'idle',
   error: null,
   users: [],
-  loading: true,
+  loading: false,
   loggedinUser: {},
 };
 
@@ -13,7 +13,6 @@ export const getUsers = createAsyncThunk(
   async rejectWithValue => {
     try {
       const { data } = await axios.get('/api/users');
-      console.log(data);
       return data.users;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -23,7 +22,6 @@ export const getUsers = createAsyncThunk(
 export const followUser = createAsyncThunk(
   'users/followUsers',
   async ({ token, userId }, { rejectWithValue }) => {
-    console.log(token, userId);
     try {
       const { data } = await axios.post(
         `/api/users/follow/${userId}`,
@@ -31,7 +29,7 @@ export const followUser = createAsyncThunk(
 
         { headers: { authorization: token } }
       );
-      console.log(data);
+      console.log('logging data from followuser response', data);
       return data;
     } catch (error) {
       console.log(error);
@@ -42,7 +40,6 @@ export const followUser = createAsyncThunk(
 export const unFollowUser = createAsyncThunk(
   'users/unfollowUsers',
   async ({ token, userId }, { rejectWithValue }) => {
-    console.log(token, userId);
     try {
       const { data } = await axios.post(
         `/api/users/unfollow/${userId}`,
@@ -58,14 +55,43 @@ export const unFollowUser = createAsyncThunk(
     }
   }
 );
+export const editProfile = createAsyncThunk(
+  'posts/editProfile',
+  async ({ token, profiledata }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `/api/users/edit`,
+        profiledata,
+
+        { headers: { authorization: token } }
+      );
+      console.log('data from api', data);
+      return data.user;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+export const SetloggedInUser = createAsyncThunk(
+  'posts/loginUser',
+  async (logindata, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(`/api/auth/login`, logindata);
+      console.log('data from api', data);
+      localStorage.setItem('token', data.encodedToken);
+
+      return data.foundUser;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 export const allUserSlice = createSlice({
   name: 'allUser',
   initialState,
-  reducers: {
-    SetloggedInUser: (state, action) => {
-      state.loggedinUser = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(getUsers.pending, state => {
@@ -85,7 +111,7 @@ export const allUserSlice = createSlice({
       })
       .addCase(followUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.loggedinUser = action.payload;
+        state.loggedinUser = action.payload.user;
       })
       .addCase(followUser.rejected, (state, action) => {
         state.loading = false;
@@ -96,15 +122,35 @@ export const allUserSlice = createSlice({
       })
       .addCase(unFollowUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.loggedinUser = action.payload;
+        state.loggedinUser = action.payload.user;
       })
       .addCase(unFollowUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(editProfile.pending, state => {
+        state.loading = true;
+      })
+      .addCase(editProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.loggedinUser = action.payload;
+      })
+      .addCase(editProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(SetloggedInUser.pending, state => {
+        state.loading = true;
+      })
+      .addCase(SetloggedInUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.loggedinUser = action.payload;
+      })
+      .addCase(SetloggedInUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
-
-export const { SetloggedInUser } = allUserSlice.actions;
 
 export default allUserSlice.reducer;

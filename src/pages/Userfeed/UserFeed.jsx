@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { PostCard } from '../../components/PostCard/PostCard';
-import { UsePost } from '../../context/Post-context';
-import { useUser } from '../../context/User-context';
 export const UserFeed = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
@@ -12,9 +11,11 @@ export const UserFeed = () => {
       navigate('/auth/login');
     }
   }, [token]);
-  const { userObj } = useUser();
-  const { state } = UsePost();
-  const UserPostState = state.filter(obj => obj.username === userObj.username);
+  const fullstore = useSelector(state => state);
+
+  const UserPostState = fullstore.posts.posts.filter(
+    obj => obj.username === fullstore.allUsers.loggedinUser.username
+  );
 
   return (
     <div className="feed-parent">

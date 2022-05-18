@@ -15,45 +15,40 @@ import {
 } from 'react-icons/bs';
 import { UsePost } from '../../context/Post-context';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal-context';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { SetloggedInUser } from '../../redux-store/alluserSlice/alluserSlice';
 
+import {
+  likeVideo,
+  dislikeVideo,
+  upvoteComment,
+  downvoteComment,
+} from '../../redux-store/postSlice/postSlice';
 export const PostCard = ({ post }) => {
+  console.log(post.likes.likedBy);
+  const dispatch = useDispatch();
   const state = useSelector(state => state.allUsers);
-  const { setShowModal, setshowEditModal } = useModal();
-  const navigate = useNavigate();
-  const userOfPost = state.users.filter(obj => obj.username === post.username);
+  const postState = useSelector(state => state.posts);
 
-  const { dispatch, setLocalComments, setLocalpost } = UsePost();
+  console.log(postState.loading);
+  const { setShowModal, setshowEditModal } = useModal();
+  // const navigate = useNavigate();
+  const userOfPost = state.users.filter(obj => obj.username === post.username);
+  console.log(state.loggedinUser._id);
+  const { setLocalComments, setLocalpost } = UsePost();
   const hasliked = post.likes.likedBy.some(
     obj => obj._id === state.loggedinUser._id
   );
   const token = localStorage.getItem('token');
-  if (token === null) {
-    navigate('/auth/login');
-  }
+
   const header = { headers: { authorization: token } };
   const LikePostHandler = () => {
     if (hasliked) {
-      axios.post(`api/posts/dislike/${post._id}`, {}, header).then(
-        response => {
-          dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
-        },
-        error => {
-          console.log(error.response.data.message);
-        }
-      );
+      dispatch(dislikeVideo({ token, postid: post._id }));
     } else {
-      axios.post(`api/posts/like/${post._id}`, {}, header).then(
-        response => {
-          dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
-        },
-        error => {
-          console.log(error.response.data.message);
-        }
-      );
+      dispatch(likeVideo({ token, postid: post._id }));
     }
   };
 
@@ -86,30 +81,7 @@ export const PostCard = ({ post }) => {
       }
     );
   };
-  const upvoteComment = comment => {
-    axios
-      .post(`/api/comments/upvote/${post._id}/${comment._id}`, {}, header)
-      .then(
-        response => {
-          dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
-        },
-        error => {
-          console.log(error);
-        }
-      );
-  };
-  const downvoteComment = comment => {
-    axios
-      .post(`/api/comments/downvote/${post._id}/${comment._id}`, {}, header)
-      .then(
-        response => {
-          dispatch({ type: 'LOAD_POSTS', payload: response.data.posts });
-        },
-        error => {
-          console.log(error);
-        }
-      );
-  };
+
   const EdiPostClickHandler = () => {
     setLocalpost(post);
     setshowEditModal(true);
@@ -128,8 +100,7 @@ export const PostCard = ({ post }) => {
         <div className="post-content">{post.content}</div>
         <div className="options">
           <div className="bookmark-icon">
-            {state.loggedinUser &&
-            state.loggedinUser.bookmarks.some(obj => obj._id === post._id) ? (
+            {state.loggedinUser?.bookmarks.some(obj => obj._id === post._id) ? (
               <div onClick={() => removeFromBookmarkHandler()}>
                 <BsBookmarkFill />
               </div>
@@ -186,7 +157,15 @@ export const PostCard = ({ post }) => {
                   disabled={obj.votes.upvotedBy?.some(
                     obj => obj._id === state.loggedinUser._id
                   )}
-                  onClick={() => upvoteComment(obj)}
+                  onClick={() => {
+                    dispatch(
+                      upvoteComment({
+                        token,
+                        postid: post._id,
+                        commentid: obj._id,
+                      })
+                    );
+                  }}
                   className="comment-vote-btn"
                 >
                   {obj.votes.upvotedBy?.some(
@@ -201,7 +180,15 @@ export const PostCard = ({ post }) => {
                   disabled={obj.votes.downvotedBy?.some(
                     obj => obj._id === state.loggedinUser._id
                   )}
-                  onClick={() => downvoteComment(obj)}
+                  onClick={() =>
+                    dispatch(
+                      downvoteComment({
+                        token,
+                        postid: post._id,
+                        commentid: obj._id,
+                      })
+                    )
+                  }
                   className="comment-vote-btn"
                 >
                   {obj.votes.downvotedBy?.some(

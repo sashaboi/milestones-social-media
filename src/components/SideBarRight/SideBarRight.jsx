@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './sidebarright.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import LoadingSpin from 'react-loading-spin';
 import {
   getUsers,
   followUser,
@@ -11,7 +12,6 @@ export const SideBarRight = () => {
   const dispatch = useDispatch();
   const state = useSelector(state => state.allUsers);
 
-  console.log('state from sidebar ', state);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
@@ -60,29 +60,33 @@ REDUXXX
     <div className="sidebar">
       <h2>Suggested users</h2>
       <div className="users-container">
-        {allOtherUsers?.map(obj => (
-          <div className="user-obj" key={obj._id}>
-            {obj.firstName}
-            {obj.lastName}
-            {state.loggedinUser.user?.following.some(
-              userobj => userobj._id === obj._id
-            ) ? (
-              <button
-                className="secondary-btn"
-                onClick={() => unfollowUserHandler(obj)}
-              >
-                Unfollow
-              </button>
-            ) : (
-              <button
-                className="secondary-btn"
-                onClick={() => followUserHandler(obj)}
-              >
-                Follow
-              </button>
-            )}
-          </div>
-        ))}
+        {state.loading ? (
+          <LoadingSpin />
+        ) : (
+          allOtherUsers?.map(obj => (
+            <div className="user-obj" key={obj._id}>
+              {obj.firstName}
+              {obj.lastName}
+              {state.loggedinUser?.following.some(
+                userobj => userobj._id === obj._id
+              ) ? (
+                <button
+                  className="secondary-btn"
+                  onClick={() => unfollowUserHandler(obj)}
+                >
+                  Unfollow
+                </button>
+              ) : (
+                <button
+                  className="secondary-btn"
+                  onClick={() => followUserHandler(obj)}
+                >
+                  Follow
+                </button>
+              )}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

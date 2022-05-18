@@ -5,7 +5,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const LogoutHandler = () => {
     localStorage.clear();
-    navigate('/');
+    navigate('/auth/login');
   };
   const token = localStorage.getItem('token');
 

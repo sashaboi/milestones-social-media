@@ -1,15 +1,37 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { PostCard } from '../../components/PostCard/PostCard';
-import { UsePost } from '../../context/Post-context';
+import { BiTrendingUp, BiLike } from 'react-icons/bi';
+import { MdOutlineWatchLater } from 'react-icons/md';
 import './myfeed.css';
+// import LoadingSpin from 'react-loading-spin';
 export const Myfeed = () => {
-  const { state } = UsePost();
-
+  const state = useSelector(state => state.posts);
+  console.log('my feed rerendered');
+  // const userState = useSelector(state => state.allUsers);
   return (
     <div className="feed-parent">
-      {state.map(obj => (
-        <PostCard key={obj._id} post={obj} />
-      ))}
+      <div className="categories-container">
+        <p>Sort by:</p>
+        <button className="category-options ">
+          <BiTrendingUp />
+          Trending
+        </button>
+        <button className="category-options">
+          <MdOutlineWatchLater />
+          Recent
+        </button>
+        <button className="category-options">
+          <BiLike />
+          Most Liked
+        </button>
+      </div>
+      <hr />
+      <div className="posts-container">
+        {state.posts.map(obj => (
+          <PostCard key={obj._id} post={obj} />
+        ))}
+      </div>
     </div>
   );
 };

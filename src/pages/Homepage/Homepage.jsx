@@ -10,16 +10,37 @@ import {
   SideBarRight,
 } from '../../components';
 import { Myfeed } from '../MyFeed/Myfeed';
-// import bgimage from '../../assets/images/bg-homepage.jpg';
+import { Bars } from 'react-loading-icons';
+
 import './homepage.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPosts } from '../../redux-store/postSlice/postSlice';
 
 export const Homepage = () => {
+  const dispatch = useDispatch();
+  // const [loading, setLoading] = useState(false);
+  const state = useSelector(state => state.allUsers);
   const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token === null) {
       navigate('/auth/login');
     }
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await dispatch(getPosts());
+        // if (response.loading === true) {
+        //   setLoading(true);
+        // }
+        if (response.error)
+          throw new Error('Could not get posts. Try again later', 'error');
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   }, []);
 
   return (
@@ -32,7 +53,7 @@ export const Homepage = () => {
         <div className="feed-container">
           <CreatePost />
           <hr className="hori-line" />
-          <Myfeed />
+          {state.loading ? <Bars /> : <Myfeed />}
         </div>
         <SideBarRight />
       </div>
