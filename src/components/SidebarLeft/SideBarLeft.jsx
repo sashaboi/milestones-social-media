@@ -14,7 +14,7 @@ export const SideBarLeft = () => {
         onClick={() => navigate('/profile')}
       >
         <CgProfile />
-        User profile
+        User Feed
       </button>
       <button
         className="sidebar-nav-btn primary-btn"

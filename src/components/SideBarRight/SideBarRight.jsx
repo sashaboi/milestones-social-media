@@ -66,7 +66,11 @@ REDUXXX
           <LoadingSpin />
         ) : (
           allOtherUsers?.map(obj => (
-            <div className="user-obj" key={obj._id}>
+            <div
+              onClick={() => navigate(`/people/${obj.username}`)}
+              className="user-obj"
+              key={obj._id}
+            >
               {obj.firstName}
               {obj.lastName}
               {state.loggedinUser?.following.some(

@@ -14,6 +14,7 @@ export const users = [
     password: 'adarshBalika123',
     createdAt: formatDate(),
     updatedAt: formatDate(),
+    bio: 'I am Adarsh Balika and I can do no wrong',
   },
   {
     _id: uuid(),
@@ -23,6 +24,7 @@ export const users = [
     password: 'Sashaboi',
     createdAt: formatDate(),
     updatedAt: formatDate(),
+    bio: 'I am Onkar Deshpande and I can do no wrong',
   },
   {
     _id: uuid(),
@@ -32,6 +34,7 @@ export const users = [
     password: 'Sashaboi',
     createdAt: formatDate(),
     updatedAt: formatDate(),
+    bio: 'I am Tushar Deshpande and I can do no wrong',
   },
   {
     _id: uuid(),
@@ -41,6 +44,7 @@ export const users = [
     password: 'Sashaboi',
     createdAt: formatDate(),
     updatedAt: formatDate(),
+    bio: 'I am Tushar Soni and I can do no wrong',
   },
 ];
 /*
