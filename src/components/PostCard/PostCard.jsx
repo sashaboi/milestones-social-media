@@ -99,7 +99,7 @@ export const PostCard = ({ post }) => {
         <div className="post-content">{post.content}</div>
         <div className="options">
           <div className="bookmark-icon">
-            {state.loggedinUser?.bookmarks.some(obj => obj._id === post._id) ? (
+            {state.loggedinUser?.bookmarks.some(obj => obj === post._id) ? (
               <div onClick={() => removeFromBookmarkHandler()}>
                 <BsBookmarkFill />
               </div>
