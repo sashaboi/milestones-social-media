@@ -113,3 +113,10 @@
   border-radius: 2rem;
   background-color: var(--secondary-color);
 }
+.profile-pic-letters:hover {
+  cursor: pointer;
+}
+.username-holder:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

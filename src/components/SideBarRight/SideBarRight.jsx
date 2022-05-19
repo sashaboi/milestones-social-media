@@ -66,13 +66,14 @@ REDUXXX
           <LoadingSpin />
         ) : (
           allOtherUsers?.map(obj => (
-            <div
-              onClick={() => navigate(`/people/${obj.username}`)}
-              className="user-obj"
-              key={obj._id}
-            >
-              {obj.firstName}
-              {obj.lastName}
+            <div className="user-obj" key={obj._id}>
+              <div
+                onClick={() => navigate(`/people/${obj.username}`)}
+                className="user-name"
+              >
+                {obj.firstName}
+                {obj.lastName}
+              </div>
               {state.loggedinUser?.following.some(
                 userobj => userobj._id === obj._id
               ) ? (
