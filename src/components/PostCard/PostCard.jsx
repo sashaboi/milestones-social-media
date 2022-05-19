@@ -27,7 +27,6 @@ import {
   downvoteComment,
 } from '../../redux-store/postSlice/postSlice';
 export const PostCard = ({ post }) => {
-  console.log(post.likes.likedBy);
   const dispatch = useDispatch();
   const state = useSelector(state => state.allUsers);
   const postState = useSelector(state => state.posts);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import './navbar.css';
 export const Navbar = () => {
@@ -8,7 +9,7 @@ export const Navbar = () => {
     navigate('/auth/login');
   };
   const token = localStorage.getItem('token');
-
+  const state = useSelector(state => state.allUsers);
   return (
     <div className="navbar-parent">
       <div className="logo-container">
@@ -21,7 +22,9 @@ export const Navbar = () => {
         </Link>
         {token ? (
           <div className="nav-options-container">
-            <div className="nav-option">Hello User </div>
+            <div className="nav-option">
+              Hello {state.loggedinUser.firstName} !{' '}
+            </div>
             <div onClick={() => LogoutHandler()} className="nav-option">
               Logout{' '}
             </div>
