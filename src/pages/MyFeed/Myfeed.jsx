@@ -10,6 +10,7 @@ import {
 } from '../../redux-store/postSlice/postSlice';
 import './myfeed.css';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 export const Myfeed = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,18 @@ export const Myfeed = () => {
       <div className="categories-container">
         <p>Sort by:</p>
         <button
-          onClick={() => dispatch(sortbylikes())}
+          onClick={() => {
+            dispatch(sortbylikes());
+            toast.info('Sorting by likes', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }}
           className={`category-options ${
             state.sortBy === 'likes' && 'selected'
           }`}
@@ -52,7 +64,18 @@ export const Myfeed = () => {
           Trending
         </button>
         <button
-          onClick={() => dispatch(sortbydate())}
+          onClick={() => {
+            dispatch(sortbydate());
+            toast.info('Sorting by Date', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }}
           className={`category-options ${
             state.sortBy === 'recent' && 'selected'
           }`}
@@ -61,7 +84,18 @@ export const Myfeed = () => {
           Recent
         </button>
         <button
-          onClick={() => dispatch(sortbycomments())}
+          onClick={() => {
+            dispatch(sortbycomments());
+            toast.info('Sorting by Popular', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }}
           className={`category-options ${
             state.sortBy === 'comments' && 'selected'
           }`}

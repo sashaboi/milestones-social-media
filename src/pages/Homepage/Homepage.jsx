@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   CreatePost,
   EditModal,
@@ -15,6 +17,7 @@ import { Bars } from 'react-loading-icons';
 import './homepage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPosts } from '../../redux-store/postSlice/postSlice';
+import { ToastContainer } from 'react-toastify';
 
 export const Homepage = () => {
   const dispatch = useDispatch();
@@ -48,6 +51,17 @@ export const Homepage = () => {
       <Modal />
       <EditModal />
       <Navbar />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="home-page-container">
         <SideBarLeft />
         <div className="feed-container">
