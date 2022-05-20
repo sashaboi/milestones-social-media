@@ -3,6 +3,7 @@ import './sidebarright.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import LoadingSpin from 'react-loading-spin';
+import { toast } from 'react-toastify';
 import {
   getUsers,
   followUser,
@@ -53,7 +54,17 @@ REDUXXX
 */
 
   const followUserHandler = obj => {
-    dispatch(followUser({ token, userId: obj._id }));
+    dispatch(followUser({ token, userId: obj._id })).then(() => {
+      toast.success('User Followed !', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    });
   };
   const unfollowUserHandler = obj => {
     dispatch(unFollowUser({ token, userId: obj._id }));
@@ -67,8 +78,13 @@ REDUXXX
         ) : (
           allOtherUsers?.map(obj => (
             <div className="user-obj" key={obj._id}>
-              {obj.firstName}
-              {obj.lastName}
+              <div
+                onClick={() => navigate(`/people/${obj.username}`)}
+                className="user-name"
+              >
+                {obj.firstName}
+                {obj.lastName}
+              </div>
               {state.loggedinUser?.following.some(
                 userobj => userobj._id === obj._id
               ) ? (

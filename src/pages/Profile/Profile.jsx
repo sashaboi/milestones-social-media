@@ -21,6 +21,7 @@ export const Profile = () => {
   );
   const [newLastName, setnewLastName] = useState(state.loggedinUser.lastName);
   const [newPassword, setnewPassword] = useState(state.loggedinUser.password);
+  const [newBio, setnewBio] = useState(state.loggedinUser.bio);
   const [toggle, settoggle] = useState('password');
 
   const EditForm = () => {
@@ -29,6 +30,7 @@ export const Profile = () => {
         firstName: newFirstName,
         lastName: newLastName,
         password: newPassword,
+        bio: newBio,
       },
     };
     dispatch(editProfile({ token, profiledata: userDatatosend }));
@@ -59,6 +61,15 @@ export const Profile = () => {
                 type="text"
                 placeholder="lastName"
                 value={newLastName}
+              />
+            </div>
+            <div className="form-element">
+              <label htmlFor="firstName">Bio</label>
+              <input
+                onChange={e => setnewBio(e.target.value)}
+                type="text"
+                placeholder="lastName"
+                value={newBio}
               />
             </div>
 

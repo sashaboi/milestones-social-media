@@ -28,11 +28,6 @@ const Login = () => {
       });
     console.log('loading before navigating', state.loading);
   };
-  // useEffect(() => {
-  //   if (state.loggedinUser._id) {
-  //     navigate('/');
-  //   }
-  // }, [state.loggedinUser._id]);
 
   return (
     <div>

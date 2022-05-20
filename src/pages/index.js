@@ -7,3 +7,4 @@ export { Myfeed } from './MyFeed/Myfeed.jsx';
 export { Profile } from './Profile/Profile.jsx';
 export { UserFeed } from './Userfeed/UserFeed.jsx';
 export { UserProfile } from './UserProfile/UserProfile.jsx';
+export { PeopleId } from './PeopleId/PeopleId.jsx';

@@ -88,6 +88,40 @@ export const SetloggedInUser = createAsyncThunk(
     }
   }
 );
+export const addBookmark = createAsyncThunk(
+  'posts/addBookmark',
+  async ({ token, postId }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `/api/users/bookmark/${postId}`,
+        {},
+        { headers: { authorization: token } }
+      );
+      console.log('data from thunk bookmark', data);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+export const removeBookmark = createAsyncThunk(
+  'posts/removebookmark',
+  async ({ token, postId }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `/api/users/remove-bookmark/${postId}`,
+        {},
+        { headers: { authorization: token } }
+      );
+      console.log('data from thunk bookmark', data);
+      return data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 export const allUserSlice = createSlice({
   name: 'allUser',
   initialState,
@@ -147,6 +181,28 @@ export const allUserSlice = createSlice({
         state.loggedinUser = action.payload;
       })
       .addCase(SetloggedInUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(addBookmark.pending, state => {
+        state.loading = true;
+      })
+      .addCase(addBookmark.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.loggedinUser.bookmarks = action.payload.bookmarks;
+      })
+      .addCase(addBookmark.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(removeBookmark.pending, state => {
+        state.loading = true;
+      })
+      .addCase(removeBookmark.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.loggedinUser.bookmarks = action.payload.bookmarks;
+      })
+      .addCase(removeBookmark.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { addPost } from '../../redux-store/postSlice/postSlice';
 import './createpost.css';
 export const CreatePost = () => {
@@ -15,7 +16,17 @@ export const CreatePost = () => {
       : setLetterCounter('letter-counter-safe');
   }, [postText]);
   const CreatePostHandler = () => {
-    dispatch(addPost({ token, postcontent: postText }));
+    dispatch(addPost({ token, postcontent: postText })).then(() => {
+      toast.info('Post Added !', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    });
     setPostText('');
   };
   return (

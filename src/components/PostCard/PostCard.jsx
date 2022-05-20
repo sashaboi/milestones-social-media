@@ -26,8 +26,9 @@ import {
   upvoteComment,
   downvoteComment,
 } from '../../redux-store/postSlice/postSlice';
+import { useNavigate } from 'react-router-dom';
 export const PostCard = ({ post }) => {
-  console.log(post.likes.likedBy);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const state = useSelector(state => state.allUsers);
   const postState = useSelector(state => state.posts);
@@ -90,17 +91,25 @@ export const PostCard = ({ post }) => {
     <div className="post-card-parent">
       <div className="post-top-content">
         <div className="profile-data">
-          <div className="profile-pic-letters">
+          <div
+            onClick={() => navigate(`/people/${post.username}`)}
+            className="profile-pic-letters"
+          >
             {userOfPost[0].firstName.slice(0, 1)}
             {userOfPost[0].lastName.slice(0, 1)}
           </div>
 
-          <div className="username-holder">{post.username}</div>
+          <div
+            onClick={() => navigate(`/people/${post.username}`)}
+            className="username-holder"
+          >
+            {post.username}
+          </div>
         </div>
         <div className="post-content">{post.content}</div>
         <div className="options">
           <div className="bookmark-icon">
-            {state.loggedinUser?.bookmarks.some(obj => obj._id === post._id) ? (
+            {state.loggedinUser?.bookmarks.some(obj => obj === post._id) ? (
               <div onClick={() => removeFromBookmarkHandler()}>
                 <BsBookmarkFill />
               </div>
