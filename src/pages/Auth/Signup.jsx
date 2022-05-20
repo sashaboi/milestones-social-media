@@ -22,9 +22,14 @@ export const Signup = () => {
   const SignupClickHandler = () => {
     axios.post('/api/auth/signup', userCred).then(
       response => {
-        dispatch(SetloggedInUser(response.data.createdUser));
-        localStorage.setItem('token', response.data.encodedToken);
-        navigate('/');
+        dispatch(SetloggedInUser(response.data.createdUser))
+          .unwrap()
+          .then(() => {
+            navigate('/');
+          })
+          .catch(error => {
+            console.log(error);
+          });
       },
       error => {
         console.log(error.response.data.errors[0]);
